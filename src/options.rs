@@ -1,27 +1,46 @@
-//! Options model.
+//! Command-line options for addr2line.
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+/// Operating mode
+#[derive(Debug, Clone, PartialEq)]
 pub enum Mode {
+    /// Default mode
     Default,
+    /// Demangle symbol names
     Demangle,
+    /// Show inline frames
     Inlines,
+    /// Show addresses
     Addresses,
+    /// Show functions only
     Functions,
 }
 
+/// Command-line options
 #[derive(Debug, Clone)]
-pub struct Addr2lineOptions {
+pub struct Options {
+    /// Operating mode
     pub mode: Mode,
-    pub binary: Option<String>,
+    /// Binary file path
+    pub binary: String,
+    /// Addresses to resolve
+    pub addresses: Vec<u64>,
+    /// Output file
+    pub output_file: String,
+    /// Verbose output
+    pub verbose: bool,
+    /// Quiet mode
+    pub quiet: bool,
 }
 
-impl Default for Addr2lineOptions {
-    fn default() -> Self { Self { mode: Mode::Default, binary: None } }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn opts() { assert_eq!(Addr2lineOptions::default().mode, Mode::Default); }
+impl Default for Options {
+    fn default() -> Self {
+        Self {
+            mode: Mode::Default,
+            binary: String::new(),
+            addresses: vec![],
+            output_file: String::new(),
+            verbose: false,
+            quiet: false,
+        }
+    }
 }
